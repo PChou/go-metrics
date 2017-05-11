@@ -45,6 +45,18 @@ func OpenTSDBWithConfig(c OpenTSDBConfig) {
 	}
 }
 
+func OpenTSDBWithConfigAndTicker(c OpenTSDBConfig,ticker *time.Ticker) {
+	if ticker == nil {
+		panic("ticker must not be nil")
+	}
+
+	for _ = range ticker.C {
+		if err := openTSDB(&c); nil != err {
+			log.Println(err)
+		}
+	}
+}
+
 func getShortHostname() string {
 	if shortHostName == "" {
 		host, _ := os.Hostname()
